@@ -35,7 +35,16 @@ class Products {
         $statement = $this->db->prepare("SELECT * FROM products WHERE id = :id");
         $statement->bindParam(':id', $id, PDO::PARAM_STR);
         $statement->execute();
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        $products = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Decode the gallery, attributes and prices field to make sure it's an array
+        $products['gallery'] = json_decode($products['gallery'], true);
+        $products['attributes'] = json_decode($products['attributes'], true);
+        $products['prices'] = json_decode($products['prices'], true);
+    
+
+        return $products;
+
     }
 
 }
