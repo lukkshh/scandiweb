@@ -8,6 +8,7 @@ class Header extends React.Component {
       isCartOpen: false,
     };
   }
+
   toggleCart = () => {
     this.setState((prevState) => {
       const newCartOpenState = !prevState.isCartOpen;
@@ -33,20 +34,26 @@ class Header extends React.Component {
     return (
       <header className="w-full h-20 flex items-center justify-around relative">
         {this.state.isCartOpen && (
-          <div className="fixed top-20 inset-0 bg-[#39374838]  z-40" />
+          <div className="fixed top-20 inset-0 bg-[#39374838] z-40" />
         )}
         <ul className="flex list-none gap-5">
           {links.map((link) => (
             <li
               key={link.path}
               className={`flex h-20 justify-center items-center ${
-                currentPath === link.path ? "active" : ""
+                currentPath === link.path ||
+                (link.path === "/" &&
+                  !links.some((l) => l.path === currentPath))
+                  ? "active"
+                  : ""
               }`}
             >
               <a
                 className="text-[#1d1f22] p-1 no-underline"
                 data-testid={
-                  currentPath === link.path
+                  currentPath === link.path ||
+                  (link.path === "/" &&
+                    !links.some((l) => l.path === currentPath))
                     ? "active-category-link"
                     : "category-link"
                 }

@@ -38,7 +38,7 @@ class Cart extends React.Component {
         <div
           className={`${
             cartItemsCount === 0 ? "hidden" : ""
-          } w-5 h-5 rounded-full absolute top-[-10px] right-[-13px] flex justify-center items-center bg-[#1D1F22] text-white`}
+          } font-roboto w-5 h-5 rounded-full absolute top-[-10px] right-[-13px] flex justify-center items-center bg-[#1D1F22] text-white`}
         >
           {cartItemsCount}
         </div>
@@ -55,10 +55,16 @@ class Cart extends React.Component {
             </div>
             <div className="m-4"></div>
             <div className="m-4 font-medium font-roboto flex justify-between ">
-              <span>Total</span> <span>{cartTotal}</span>
+              <span>Total</span> <span>${cartTotal}</span>
             </div>
             <div className="m-4">
-              <button className="bg-[#5ECE7B] w-[292px] h-[43px] text-white uppercase">
+              <button
+                disabled={cartItemsCount === 0}
+                onClick={() => {
+                  localStorage.removeItem("cartItems");
+                }}
+                className="bg-[#5ECE7B] disabled:bg-[#99dbab] w-[292px] h-[43px] text-white uppercase"
+              >
                 Place Order
               </button>
             </div>
