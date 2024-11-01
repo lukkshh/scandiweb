@@ -43,7 +43,9 @@ class Card extends React.Component {
           onClick={() => {
             handleAddToCart();
           }}
-          className=" z-10 hidden group-hover:flex  w-[52px] h-[52px] top-[304px] left-[287px] absolute bg-[#5ECE7B] rounded-full justify-center items-center"
+          className={` ${
+            data.inStock ? "" : "group-hover:hidden"
+          } z-10 hidden group-hover:flex  w-[52px] h-[52px] top-[304px] left-[287px] absolute bg-[#5ECE7B] rounded-full justify-center items-center`}
         >
           <img src="white-cart.svg" alt="Cart" />
         </button>
