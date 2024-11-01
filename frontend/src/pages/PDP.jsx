@@ -70,12 +70,6 @@ class PDP extends React.Component {
   };
 
   handleAddToCart = () => {
-    const { size, color } = this.item;
-    if (!size || !color) {
-      alert(`Please select a ${!size ? "size" : "color"}`);
-      return;
-    }
-
     this.item.price = this.state.product.prices[0].amount;
     addToCart(this.item);
   };
@@ -128,7 +122,7 @@ class PDP extends React.Component {
           return (
             <section className="flex m-[140px]">
               <div className="flex space-x-12" data-testid="product-gallery">
-                <div className="space-y-8">
+                <div className="space-y-8 max-h-[478px] overflow-y-auto ">
                   {product.gallery?.map((img, key) => (
                     <img
                       key={key}
@@ -159,7 +153,9 @@ class PDP extends React.Component {
                 </p>
                 <button
                   data-testid="add-to-cart"
-                  disabled={!product.inStock}
+                  disabled={
+                    !product.inStock || !this.item.size || !this.item.color
+                  }
                   onClick={this.handleAddToCart}
                   className="bg-[#5ECE7B] font-semibold mt-6 disabled:bg-[#99dbab] w-[292px] h-[43px] text-white uppercase"
                 >
