@@ -1,12 +1,21 @@
 function addToCart(product) {
   let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
 
-  const existingProduct = cartItems.find((item) => item.id === product.id);
+  const existingProduct = cartItems.find(
+    (item) =>
+      item.id === product.id &&
+      item.size === product.size &&
+      item.color === product.color
+  );
 
   if (existingProduct) {
     existingProduct.quantity += 1;
   } else {
-    cartItems.push(product);
+    const newProduct = {
+      ...product,
+      itemID: cartItems.length + 1,
+    };
+    cartItems.push(newProduct);
   }
 
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
