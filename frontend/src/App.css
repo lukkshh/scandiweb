@@ -26,3 +26,14 @@
 .customShadow:hover {
   box-shadow: 0px 4px 35px 0px #a8acb030;
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

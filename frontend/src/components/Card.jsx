@@ -11,6 +11,9 @@ class Card extends React.Component {
         id: data.id,
         quantity: 1,
         price: data.prices[0].amount,
+        img: data.gallery[0],
+        name: data.name,
+        currencySymbol: data.prices[0].currency.symbol,
       };
 
       if (data.attributes.length === 0) {

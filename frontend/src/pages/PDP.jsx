@@ -42,10 +42,13 @@ class PDP extends React.Component {
     };
     this.item = {
       id: this.props.params.id,
+      img: "",
+      name: "",
       quantity: 1,
       size: "",
       color: "",
       price: "",
+      currencySymbol: "",
     };
   }
 
@@ -71,6 +74,9 @@ class PDP extends React.Component {
 
   handleAddToCart = () => {
     this.item.price = this.state.product.prices[0].amount;
+    this.item.img = this.state.product.gallery[0];
+    this.item.name = this.state.product.name;
+    this.item.currencySymbol = this.state.product.prices[0].currency.symbol;
     addToCart(this.item);
   };
 
@@ -122,7 +128,7 @@ class PDP extends React.Component {
           return (
             <section className="flex m-[140px]">
               <div className="flex space-x-12" data-testid="product-gallery">
-                <div className="space-y-8 max-h-[478px] overflow-y-auto ">
+                <div className="space-y-8 max-h-[478px] overflow-y-auto no-scrollbar ">
                   {product.gallery?.map((img, key) => (
                     <img
                       key={key}
@@ -162,7 +168,7 @@ class PDP extends React.Component {
                   Add To Cart
                 </button>
                 <div
-                  className="pr-[150px] mt-6"
+                  className="pr-[150px] mt-6  max-w-[900px]"
                   data-testid="product-description"
                 >
                   {parse(product.description || "")}
