@@ -21,13 +21,15 @@ require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__."/../controllers/database.php";
 require_once __DIR__."/../controllers/products.php";
 require_once __DIR__."/../controllers/graphql.php";
+require_once __DIR__."/../controllers/orders.php";
 
 use GraphQL\GraphQL;
 
 
 $database = new Database();
 $products = new Products($database);
-$graphqlSchema = new GraphQLSchema($products);
+$orders = new Orders($database);
+$graphqlSchema = new GraphQLSchema($products , $orders);
 $schema = $graphqlSchema->getSchema();
 
 $input = json_decode(file_get_contents('php://input'), true);
