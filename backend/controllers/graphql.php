@@ -3,12 +3,15 @@
 use GraphQL\Type\Schema;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\InputObjectType;
 
 class GraphQLSchema {
     private $product;
+    private $orders;
 
-    public function __construct(Products $product) {
+    public function __construct(Products $product , Orders $orders) {
         $this->product = $product;
+        $this->orders = $orders;
     }
 
     public function getSchema() {
@@ -92,8 +95,34 @@ class GraphQLSchema {
             ]
         ]);
 
+        // Mutation definition
+        $mutationType = new ObjectType([
+            'name' => 'Mutation',
+            'fields' => [
+                'placeOrder' => [
+                    'type' => Type::boolean(), 
+                    'args' => [
+                        'orders' => Type::listOf(new InputObjectType([
+                            'name' => 'OrderInput',
+                            'fields' => [
+                                'id' => Type::nonNull(Type::string()),    
+                                'quantity' => Type::nonNull(Type::int()), 
+                                'size' => Type::string(),                  
+                                'color' => Type::string(),                 
+                            ],
+                        ])),
+                    ],
+                    'resolve' => function ($root, $args) {
+                        return $this->orders->placeOrder($args['orders']);
+                    }
+                ],
+            ]
+        ]);
+
         return new Schema([
             'query' => $queryType,
+            'mutation' => $mutationType
         ]);
     }
 }
+
