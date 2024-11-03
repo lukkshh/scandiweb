@@ -52,6 +52,8 @@ try {
         id INT AUTO_INCREMENT PRIMARY KEY,
         product_id VARCHAR(50),
         quantity INT NOT NULL,
+        size VARCHAR(255) DEFAULT NULL,
+        color VARCHAR(255) DEFAULT NULL,
         order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
     )";
