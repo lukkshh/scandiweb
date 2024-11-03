@@ -1,8 +1,16 @@
 import React from "react";
 import getCartTotal from "../utils/getCartTotal";
 
+import { ApolloConsumer, gql } from "@apollo/client";
+
 import quantityController from "../utils/quantityController";
 const { increase, decrease } = quantityController;
+
+const PLACE_ORDER = gql`
+  mutation PlaceOrder($orders: [OrderInput!]!) {
+    placeOrder(orders: $orders)
+  }
+`;
 
 class Cart extends React.Component {
   constructor(props) {
@@ -12,6 +20,29 @@ class Cart extends React.Component {
       cartItems: this.getCartItems(),
     };
   }
+
+  handlePlaceOrder = async (client) => {
+    try {
+      const orders = this.state.cartItems.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+        size: item.size || "XS",
+        color: item.color || "#D3D2D5",
+      }));
+
+      const { data } = await client.mutate({
+        mutation: PLACE_ORDER,
+        variables: { orders },
+      });
+
+      if (data.placeOrder) {
+        localStorage.removeItem("cartItems");
+        this.setState({ cartItemsCount: 0, cartItems: [] });
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
+  };
 
   getCartItemsCount = () => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -191,15 +222,17 @@ class Cart extends React.Component {
               <span>Total</span> <span>${cartTotal}</span>
             </div>
             <div className="m-4 mt-8">
-              <button
-                disabled={cartItemsCount === 0}
-                onClick={() => {
-                  localStorage.removeItem("cartItems");
-                }}
-                className="bg-[#5ECE7B] disabled:bg-[#99dbab] w-[292px] h-[43px] text-white uppercase"
-              >
-                Place Order
-              </button>
+              <ApolloConsumer>
+                {(client) => (
+                  <button
+                    disabled={cartItemsCount === 0}
+                    onClick={() => this.handlePlaceOrder(client)}
+                    className="bg-[#5ECE7B] disabled:bg-[#99dbab] w-[292px] h-[43px] text-white uppercase"
+                  >
+                    Place Order
+                  </button>
+                )}
+              </ApolloConsumer>
             </div>
           </div>
         )}
