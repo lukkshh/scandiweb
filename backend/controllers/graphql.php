@@ -77,6 +77,15 @@ class GraphQLSchema {
                         return $this->product->getProducts();
                     }
                 ],
+                'productsByCategory' => [
+                    'type' => Type::listOf($productType),
+                    'args' => [
+                        'category' => Type::string(),
+                    ],
+                    'resolve' => function ($root, $args) {
+                        return $this->product->getProductsByCategory($args['category']);
+                    }
+                ],
                 'categories' => [
                     'type' => Type::listOf($categoryType),
                     'resolve' => function () {
