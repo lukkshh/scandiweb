@@ -69,17 +69,24 @@ class PDP extends React.Component {
 
   handleAddToCart = () => {
     const { data } = this.props;
-    const { selectedSize, selectedColor } = this.state;
+    const { selectedSize, selectedColor, selectedCapacity } = this.state;
+
+    const { attributes } = data.product;
+
+    const hasSize = attributes.some((attr) => attr.id === "Size");
+    const hasColor = attributes.some((attr) => attr.id === "Color");
+    const hasCapacity = attributes.some((attr) => attr.id === "Capacity");
 
     const item = {
       id: this.props.params.id,
       img: data.product.gallery[0],
       name: data.product.name,
       quantity: 1,
-      size: selectedSize,
-      color: selectedColor,
       price: data.product.prices[0].amount,
       currencySymbol: data.product.prices[0].currency.symbol,
+      ...(hasSize && { size: selectedSize }),
+      ...(hasColor && { color: selectedColor }),
+      ...(hasCapacity && { capacity: selectedCapacity }),
     };
 
     addToCart(item);
@@ -164,6 +171,7 @@ class PDP extends React.Component {
               {data.product.prices[0].currency.symbol}
               {data.product.prices[0].amount}
             </p>
+
             <button
               data-testid="add-to-cart"
               disabled={
@@ -177,6 +185,7 @@ class PDP extends React.Component {
             >
               Add To Cart
             </button>
+
             <div
               className="pr-[150px] mt-6 max-w-[900px]"
               data-testid="product-description"

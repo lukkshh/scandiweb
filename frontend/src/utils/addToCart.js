@@ -5,7 +5,8 @@ function addToCart(product) {
     (item) =>
       item.id === product.id &&
       item.size === product.size &&
-      item.color === product.color
+      item.color === product.color &&
+      item.capacity === product.capacity
   );
 
   if (existingProduct) {
