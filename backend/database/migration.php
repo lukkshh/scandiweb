@@ -54,6 +54,7 @@ try {
         quantity INT NOT NULL,
         size VARCHAR(255) DEFAULT NULL,
         color VARCHAR(255) DEFAULT NULL,
+        capacity VARCHAR(255) DEFAULT NULL,
         order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
     )";

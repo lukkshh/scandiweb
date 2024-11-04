@@ -12,15 +12,16 @@ class Orders {
         try {
             foreach ($orders as &$order) {
                 $statement = $this->db->prepare("
-                    INSERT INTO orders (product_id, quantity, size, color)
-                    VALUES (:product_id, :quantity, :size, :color)
+                    INSERT INTO orders (product_id, quantity, size, color, capacity)
+                    VALUES (:product_id, :quantity, :size, :color, :capacity)
                 ");
     
                 $statement->bindParam(':product_id', $order['id'], PDO::PARAM_STR);
                 $statement->bindParam(':quantity', $order['quantity'], PDO::PARAM_INT);
                 $statement->bindParam(':size', $order['size'], PDO::PARAM_STR);
                 $statement->bindParam(':color', $order['color'], PDO::PARAM_STR);
-    
+                $statement->bindParam(':capacity', $order['capacity'], PDO::PARAM_STR);
+
                 $statement->execute();
             }
             $this->db->commit(); 
