@@ -52,7 +52,7 @@ class Card extends React.Component {
         >
           <img src="white-cart.svg" alt="Cart" />
         </button>
-        <a href={`/p/${data.id}`}>
+        <a href={`/${data.category}/${data.id}`}>
           <img
             className="w-[354px] h-[330px] object-contain
           "

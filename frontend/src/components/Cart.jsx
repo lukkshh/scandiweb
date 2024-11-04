@@ -151,6 +151,7 @@ class Cart extends React.Component {
           {cartItemsCount}
         </div>
         <img
+          data-testid="cart-btn"
           className="cursor-pointer z-50"
           onClick={onCartToggle}
           src="/cart.svg"

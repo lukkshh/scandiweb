@@ -23,12 +23,12 @@ class Header extends React.Component {
   };
 
   render() {
-    const currentPath = window.location.pathname;
+    const { activeCategory } = this.props; // Get activeCategory from props
 
     const links = [
-      { path: "/", label: "WOMEN" },
-      { path: "/men", label: "MEN" },
-      { path: "/kids", label: "KIDS" },
+      { path: "/all", label: "ALL" },
+      { path: "/clothes", label: "CLOTHES" },
+      { path: "/tech", label: "TECH" },
     ];
 
     return (
@@ -41,19 +41,13 @@ class Header extends React.Component {
             <li
               key={link.path}
               className={`flex h-20 justify-center items-center ${
-                currentPath === link.path ||
-                (link.path === "/" &&
-                  !links.some((l) => l.path === currentPath))
-                  ? "active"
-                  : ""
+                activeCategory === link.label.toLowerCase() ? "active" : ""
               }`}
             >
               <a
                 className="text-[#1d1f22] p-1 no-underline"
                 data-testid={
-                  currentPath === link.path ||
-                  (link.path === "/" &&
-                    !links.some((l) => l.path === currentPath))
+                  activeCategory === link.label.toLowerCase()
                     ? "active-category-link"
                     : "category-link"
                 }

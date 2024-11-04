@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-import Header from "./components/Header";
+import Category from "./pages/Category";
 import Home from "./pages/Index";
 import PDP from "./pages/PDP";
 
@@ -18,12 +18,13 @@ class App extends React.Component {
     return (
       <ApolloProvider client={client}>
         <Router>
-          <Header />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/men" element={<Home />} />
-            <Route path="/kids" element={<Home />} />
-            <Route path="/p/:id" element={<PDP />} />
+            <Route path="/all" element={<Home />} />
+            <Route path="/clothes" element={<Category />} />
+            <Route path="/tech" element={<Category />} />
+            <Route path="/clothes/:id" element={<PDP />} />
+            <Route path="/tech/:id" element={<PDP />} />
           </Routes>
         </Router>
       </ApolloProvider>

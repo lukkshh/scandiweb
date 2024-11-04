@@ -4,6 +4,7 @@ import parse from "html-react-parser";
 import addToCart from "../utils/addToCart";
 import { gql } from "@apollo/client";
 import withGraphQl from "../utils/withGraphQL";
+import Header from "../components/Header";
 
 const GET_PRODUCT = gql`
   query GetProduct($id: String!) {
@@ -144,70 +145,75 @@ class PDP extends React.Component {
     const { currentImg, selectedSize, selectedColor } = this.state;
 
     return (
-      <section className="flex m-[140px]">
-        <div className="flex space-x-12" data-testid="product-gallery">
-          <div className="space-y-8 max-h-[478px] overflow-y-auto no-scrollbar">
-            {data.product.gallery.map((img, key) => (
-              <img
-                onClick={() => this.handleImgChange(img)}
-                key={key}
-                className="cursor-pointer object-contain w-20 h-20"
-                src={img}
-                alt={`gallery-img-${key}`}
-              />
-            ))}
-          </div>
-          <div className="relative">
-            <div className="absolute top-1/2 translate-y-[-50%] w-full flex justify-between">
-              <button
-                onClick={() => this.handlePrevImage()}
-                className="w-[31.7px] h-[31.7px] flex justify-center items-center bg-[#000000BA]"
-              >
-                <img src="/CaretLeft.svg" alt="" />
-              </button>
-              <button
-                onClick={() => {
-                  this.handleNextImage();
-                }}
-                className="w-[31.7px] h-[31.7px] flex justify-center items-center bg-[#000000BA]"
-              >
-                <img src="/CaretRight.svg" alt="" />
-              </button>
+      <>
+        <Header activeCategory={data.product.category} />
+        <section className="flex m-[140px]">
+          <div className="flex space-x-12" data-testid="product-gallery">
+            <div className="space-y-8 max-h-[478px] overflow-y-auto no-scrollbar">
+              {data.product.gallery.map((img, key) => (
+                <img
+                  onClick={() => this.handleImgChange(img)}
+                  key={key}
+                  className="cursor-pointer object-contain w-20 h-20"
+                  src={img}
+                  alt={`gallery-img-${key}`}
+                />
+              ))}
             </div>
-            <img
-              className="w-[575px] h-[478px] object-contain"
-              src={currentImg}
-              alt="main-img"
-            />
+            <div className="relative">
+              <div className="absolute top-1/2 translate-y-[-50%] w-full flex justify-between">
+                <button
+                  onClick={() => this.handlePrevImage()}
+                  className="w-[31.7px] h-[31.7px] flex justify-center items-center bg-[#000000BA]"
+                >
+                  <img src="/CaretLeft.svg" alt="" />
+                </button>
+                <button
+                  onClick={() => {
+                    this.handleNextImage();
+                  }}
+                  className="w-[31.7px] h-[31.7px] flex justify-center items-center bg-[#000000BA]"
+                >
+                  <img src="/CaretRight.svg" alt="" />
+                </button>
+              </div>
+              <img
+                className="w-[575px] h-[478px] object-contain"
+                src={currentImg}
+                alt="main-img"
+              />
+            </div>
           </div>
-        </div>
-        <div className="ml-[200px]">
-          <p className="font-semibold text-3xl">{data.product.name}</p>
-          <p className="uppercase mt-4 text-lg font-bold">Size:</p>
-          <div className="flex space-x-2">{this.renderSizeOptions()}</div>
-          <p className="uppercase mt-4 text-lg font-bold">Color:</p>
-          <div className="space-x-2">{this.renderColorOptions()}</div>
-          <p className="uppercase mt-4 text-lg font-bold">Price:</p>
-          <p className="uppercase mt-4 text-2xl font-bold">
-            {data.product.prices[0].currency.symbol}
-            {data.product.prices[0].amount}
-          </p>
-          <button
-            data-testid="add-to-cart"
-            disabled={!data.product.inStock || !selectedSize || !selectedColor}
-            onClick={this.handleAddToCart}
-            className="bg-[#5ECE7B] font-semibold mt-6 disabled:bg-[#99dbab] w-[292px] h-[43px] text-white uppercase"
-          >
-            Add To Cart
-          </button>
-          <div
-            className="pr-[150px] mt-6 max-w-[900px]"
-            data-testid="product-description"
-          >
-            {parse(data.product.description || "")}
+          <div className="ml-[200px]">
+            <p className="font-semibold text-3xl">{data.product.name}</p>
+            <p className="uppercase mt-4 text-lg font-bold">Size:</p>
+            <div className="flex space-x-2">{this.renderSizeOptions()}</div>
+            <p className="uppercase mt-4 text-lg font-bold">Color:</p>
+            <div className="space-x-2">{this.renderColorOptions()}</div>
+            <p className="uppercase mt-4 text-lg font-bold">Price:</p>
+            <p className="uppercase mt-4 text-2xl font-bold">
+              {data.product.prices[0].currency.symbol}
+              {data.product.prices[0].amount}
+            </p>
+            <button
+              data-testid="add-to-cart"
+              disabled={
+                !data.product.inStock || !selectedSize || !selectedColor
+              }
+              onClick={this.handleAddToCart}
+              className="bg-[#5ECE7B] font-semibold mt-6 disabled:bg-[#99dbab] w-[292px] h-[43px] text-white uppercase"
+            >
+              Add To Cart
+            </button>
+            <div
+              className="pr-[150px] mt-6 max-w-[900px]"
+              data-testid="product-description"
+            >
+              {parse(data.product.description || "")}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </>
     );
   }
 }
