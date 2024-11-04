@@ -38,7 +38,7 @@ const GET_PRODUCTS = gql`
 class Home extends React.Component {
   render() {
     const { data } = this.props;
-    console.log(data);
+
     return (
       <>
         <Header activeCategory="all" />
