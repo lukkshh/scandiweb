@@ -17,8 +17,12 @@ const GET_PRODUCTS = gql`
       category
       attributes {
         id
+        name
+        type
         items {
           displayValue
+          value
+          id
         }
       }
       prices {
@@ -34,6 +38,7 @@ const GET_PRODUCTS = gql`
 class Home extends React.Component {
   render() {
     const { data } = this.props;
+    console.log(data);
     return (
       <>
         <Header activeCategory="all" />

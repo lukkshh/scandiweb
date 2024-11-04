@@ -77,6 +77,9 @@ class PDP extends React.Component {
     const hasColor = attributes.some((attr) => attr.id === "Color");
     const hasCapacity = attributes.some((attr) => attr.id === "Capacity");
 
+    const findAttribute = (attributes, attributeId) =>
+      attributes.find((attr) => attr.id === attributeId)?.items || [];
+
     const item = {
       id: this.props.params.id,
       img: data.product.gallery[0],
@@ -87,6 +90,11 @@ class PDP extends React.Component {
       ...(hasSize && { size: selectedSize }),
       ...(hasColor && { color: selectedColor }),
       ...(hasCapacity && { capacity: selectedCapacity }),
+      ...(hasSize && { availableSizes: findAttribute(attributes, "Size") }),
+      ...(hasColor && { availableColors: findAttribute(attributes, "Color") }),
+      ...(hasCapacity && {
+        availableCapacities: findAttribute(attributes, "Capacity"),
+      }),
     };
 
     addToCart(item);
