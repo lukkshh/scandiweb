@@ -36,6 +36,7 @@ class CapacityOptions extends React.Component {
                 name={`capacity-${this.generateUniqueNumber()}`}
               />
               <label
+                htmlFor=""
                 className={`${
                   selectedCapacity === capacityOption.value
                     ? "text-white"

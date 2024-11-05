@@ -89,13 +89,13 @@ class Cart extends React.Component {
         >
           {cartItemsCount}
         </div>
-        <img
+        <button
           data-testid="cart-btn"
-          className="cursor-pointer z-50"
+          className="flex justify-center items-center cursor-pointer z-50 "
           onClick={onCartToggle}
-          src="/cart.svg"
-          alt="cart"
-        />
+        >
+          <img src="/cart.svg" alt="cart" />
+        </button>
         {isCartOpen && (
           <div className="absolute right-[-40px] top-[49px] w-[325px] bg-white z-50">
             <div className="m-4 ">

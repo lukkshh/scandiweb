@@ -35,13 +35,14 @@ class SizeOptions extends React.Component {
                 disabled
               />
               <label
+                htmlFor=""
                 className={`${
                   selectedSize === sizeOption.value
                     ? "text-white"
                     : "text-black"
                 } text-[14px] top-[2px] font-roboto absolute left-1/2 translate-x-[-50%]`}
               >
-                {sizeOption.displayValue}
+                {sizeOption.value || sizeOption.displayValue}
               </label>
             </div>
           ))}

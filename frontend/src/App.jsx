@@ -9,7 +9,7 @@ import PDP from "./pages/PDP";
 import "./App.css";
 
 const client = new ApolloClient({
-  uri: "/api",
+  uri: "/api/",
   cache: new InMemoryCache(),
 });
 
