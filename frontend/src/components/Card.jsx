@@ -28,10 +28,6 @@ class Card extends React.Component {
       const selectedCapacity = findAttribute(data.attributes, "Capacity")[0]
         ?.displayValue;
 
-      console.log(data);
-      console.log(data.attributes);
-      // console.log(selectedSize);
-
       const newItem = {
         id: data.id,
         quantity: 1,
