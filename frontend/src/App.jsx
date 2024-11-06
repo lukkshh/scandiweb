@@ -11,6 +11,7 @@ import "./App.css";
 const client = new ApolloClient({
   uri: "/api/",
   cache: new InMemoryCache(),
+  credentials: "include",
 });
 
 class App extends React.Component {
