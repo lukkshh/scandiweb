@@ -5,8 +5,6 @@ import MainImage from "./MainImage";
 
 class Gallery extends React.Component {
   render() {
-    // console.log(this.props.data.gallery);
-
     return (
       <div className="flex space-x-12" data-testid="product-gallery">
         <ImgCarousel
