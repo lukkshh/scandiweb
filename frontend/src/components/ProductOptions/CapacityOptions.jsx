@@ -21,6 +21,11 @@ class CapacityOptions extends React.Component {
           {capacities.map((capacity) => (
             <div className="relative" key={capacity}>
               <input
+                data-testid={
+                  this.props.selectedCapacity === capacity
+                    ? `cart-item-attribute-capacity-${capacity}-selected`
+                    : `cart-item-attribute-capacity-${capacity}`
+                }
                 className="cursor-pointer appearance-none h-[45px] w-[63px] border-2 border-[#1D1F22] rounded-sm checked:bg-[#1D1F22] focus:outline-none"
                 type="radio"
                 name="capacity"

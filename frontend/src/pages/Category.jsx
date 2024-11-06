@@ -17,6 +17,8 @@ const GET_PRODUCTS = gql`
       attributes {
         id
         items {
+          id
+          value
           displayValue
         }
       }
@@ -33,6 +35,7 @@ const GET_PRODUCTS = gql`
 class Category extends React.Component {
   render() {
     const { data } = this.props;
+
     return (
       <>
         <Header activeCategory={data.productsByCategory[0].category} />

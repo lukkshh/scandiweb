@@ -97,7 +97,10 @@ class Cart extends React.Component {
           <img src="/cart.svg" alt="cart" />
         </button>
         {isCartOpen && (
-          <div className="absolute right-[-40px] top-[49px] w-[325px] bg-white z-50">
+          <div
+            data-testid="cart-overlay"
+            className="absolute right-[-40px] top-[49px] w-[325px] bg-white z-50"
+          >
             <div className="m-4 ">
               <span className="font-bold">MyBag</span>,{" "}
               <span data-testid="cart-item-amount">{cartItemsCount}</span> items

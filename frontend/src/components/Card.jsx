@@ -23,11 +23,14 @@ class Card extends React.Component {
           ? attributes.find((attr) => attr.id === attributeId)?.items || []
           : [];
 
-      const selectedSize = findAttribute(data.attributes, "Size")[0]
-        ?.displayValue;
+      const selectedSize = findAttribute(data.attributes, "Size")[0]?.value;
       const selectedColor = findAttribute(data.attributes, "Color")[0]?.value;
       const selectedCapacity = findAttribute(data.attributes, "Capacity")[0]
         ?.displayValue;
+
+      console.log(data);
+      console.log(data.attributes);
+      // console.log(selectedSize);
 
       const newItem = {
         id: data.id,
@@ -49,10 +52,9 @@ class Card extends React.Component {
 
     return (
       <div
-        data-testid={`product-${data.id}`}
         className={`${
           data.inStock ? "" : "out-of-stock"
-        } w-[386px] h-[444px] group relative flex flex-col justify-center items-center customShadow`}
+        } w-[386px] h-[444px]  group relative flex flex-col justify-center items-center customShadow`}
       >
         <button
           disabled={!data.inStock}
@@ -63,7 +65,12 @@ class Card extends React.Component {
         >
           <img src="white-cart.svg" alt="Cart" />
         </button>
-        <a href={`/${data.category}/${data.id}`}>
+        <a
+          data-testid={`product-${data.name
+            .toLowerCase()
+            .replace(/\s+/g, "-")}`}
+          href={`/${data.category}/${data.id}`}
+        >
           <img
             className="w-[354px] h-[330px] object-contain"
             src={data.gallery[0]}

@@ -12,7 +12,9 @@ class DisplayItems extends React.Component {
       <div className="m-4 mt-8 max-h-[500px] space-y-10 no-scrollbar overflow-y-auto ">
         {this.props.cartItems.map((item, index) => (
           <div
-            data-testid={`cart-item-attribute-${item.name}`}
+            data-testid={`cart-item-attribute-${item.name
+              .toLowerCase()
+              .replace(/\s+/g, "-")}`}
             className="flex justify-around"
             key={index}
           >

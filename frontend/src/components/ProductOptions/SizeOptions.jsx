@@ -28,6 +28,11 @@ class SizeOptions extends React.Component {
           {sizes.map((size) => (
             <div className="relative" key={size}>
               <input
+                data-testid={
+                  this.props.selectedSize === size
+                    ? `cart-item-attribute-size-${size}-selected`
+                    : `cart-item-attribute-size-${size}`
+                }
                 className="cursor-pointer appearance-none h-[45px] w-[63px] border-2 border-[#1D1F22] rounded-sm checked:bg-[#1D1F22] focus:outline-none"
                 type="radio"
                 name="Size"

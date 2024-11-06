@@ -21,8 +21,6 @@ class ColorOptions extends React.Component {
       .find((attributeSet) => attributeSet.id === "Color")
       .items.map((item) => item.value);
 
-    console.log(colors);
-
     return (
       <>
         <p className="uppercase mt-4 text-lg font-bold">Color:</p>
@@ -30,6 +28,11 @@ class ColorOptions extends React.Component {
           {colors.map((color) => (
             <input
               key={color}
+              data-testid={
+                this.props.selectedColor === color
+                  ? `cart-item-attribute-color-${color}-selected`
+                  : `cart-item-attribute-color-${color}`
+              }
               className="cursor-pointer appearance-none h-9 w-9 border-2 checked:border-[#5ECE7B] rounded-sm focus:outline-none"
               type="radio"
               name="color"
