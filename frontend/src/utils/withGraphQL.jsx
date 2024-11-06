@@ -7,7 +7,10 @@ function withGraphQl(Component, query) {
       ? { id: props.params.id }
       : props.variables || {};
 
-    const { loading, error, data } = useQuery(query, { variables });
+    const { loading, error, data } = useQuery(query, {
+      variables,
+      fetchPolicy: "no-cache",
+    });
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
