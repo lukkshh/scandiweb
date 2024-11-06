@@ -4,8 +4,9 @@ import Cart from "./Cart/Cart";
 class Header extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      isCartOpen: false,
+      isCartOpen: JSON.parse(localStorage.getItem("isCartOpen")) || false,
     };
   }
 
@@ -13,17 +14,29 @@ class Header extends React.Component {
     this.setState((prevState) => {
       const newCartOpenState = !prevState.isCartOpen;
 
-      if (newCartOpenState) {
-        document.body.classList.add("overflow-hidden");
-      } else {
-        document.body.classList.remove("overflow-hidden");
-      }
+      localStorage.setItem("isCartOpen", JSON.stringify(newCartOpenState));
+
       return { isCartOpen: newCartOpenState };
     });
   };
 
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      const storedCartState = JSON.parse(localStorage.getItem("isCartOpen"));
+      if (storedCartState !== this.state.isCartOpen) {
+        this.setState({ isCartOpen: storedCartState });
+      }
+    }, 500);
+  }
+
+  componentWillUnmount() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+
   render() {
-    const { activeCategory } = this.props; // Get activeCategory from props
+    const { activeCategory } = this.props;
 
     const links = [
       { path: "/all", label: "ALL" },
@@ -59,10 +72,7 @@ class Header extends React.Component {
           ))}
         </ul>
         <img className="mr-40" src="/a-logo.svg" alt="logo" />
-        <Cart
-          onCartToggle={this.toggleCart}
-          isCartOpen={this.state.isCartOpen}
-        />
+        <Cart isCartOpen={this.state.isCartOpen} toggleCart={this.toggleCart} />
       </header>
     );
   }

@@ -98,6 +98,8 @@ class PDP extends React.Component {
     };
 
     addToCart(item);
+
+    localStorage.setItem("isCartOpen", JSON.stringify(true));
   };
 
   handleImgChange = (img) => {

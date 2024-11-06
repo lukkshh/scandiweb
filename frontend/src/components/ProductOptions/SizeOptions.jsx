@@ -45,6 +45,7 @@ class SizeOptions extends React.Component {
                   this.props.selectedSize === size ? "text-white" : "text-black"
                 } cursor-pointer font-roboto absolute left-1/2 translate-x-[-50%] top-3`}
                 htmlFor={`size${size}`}
+                style={{ pointerEvents: "none" }}
               >
                 {size}
               </label>

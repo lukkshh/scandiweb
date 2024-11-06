@@ -76,7 +76,7 @@ class Cart extends React.Component {
 
   render() {
     const { cartItemsCount, cartItems } = this.state;
-    const { isCartOpen, onCartToggle } = this.props;
+    const { isCartOpen, toggleCart } = this.props;
 
     const cartTotal = getCartTotal();
 
@@ -92,7 +92,7 @@ class Cart extends React.Component {
         <button
           data-testid="cart-btn"
           className="flex justify-center items-center cursor-pointer z-50 "
-          onClick={onCartToggle}
+          onClick={toggleCart}
         >
           <img src="/cart.svg" alt="cart" />
         </button>

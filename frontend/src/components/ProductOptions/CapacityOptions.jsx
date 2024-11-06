@@ -43,6 +43,7 @@ class CapacityOptions extends React.Component {
                     : "text-black"
                 } cursor-pointer font-roboto absolute left-1/2 translate-x-[-50%] top-3`}
                 htmlFor={`capacity${capacity}`}
+                style={{ pointerEvents: "none" }}
               >
                 {capacity}
               </label>
