@@ -24,14 +24,14 @@ class ColorOptions extends React.Component {
     return (
       <>
         <p className="uppercase mt-4 text-lg font-bold">Color:</p>
-        <div className="space-x-2">
+        <div data-testid="product-attribute-color" className="space-x-2">
           {colors.map((color) => (
             <input
               key={color}
               data-testid={
                 this.props.selectedColor === color
-                  ? `cart-item-attribute-color-${color}-selected`
-                  : `cart-item-attribute-color-${color}`
+                  ? `product-attribute-color-${color}-selected`
+                  : `product-attribute-color-${color}`
               }
               className="cursor-pointer appearance-none h-9 w-9 border-2 checked:border-[#5ECE7B] rounded-sm focus:outline-none"
               type="radio"

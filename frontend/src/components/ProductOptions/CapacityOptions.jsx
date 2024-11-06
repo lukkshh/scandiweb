@@ -17,14 +17,17 @@ class CapacityOptions extends React.Component {
     return (
       <>
         <p className="uppercase mt-4 text-lg font-bold">Capacity:</p>
-        <div className="flex space-x-2">
+        <div
+          data-testid="product-attribute-capacity"
+          className="flex space-x-2"
+        >
           {capacities.map((capacity) => (
             <div className="relative" key={capacity}>
               <input
                 data-testid={
                   this.props.selectedCapacity === capacity
-                    ? `cart-item-attribute-capacity-${capacity}-selected`
-                    : `cart-item-attribute-capacity-${capacity}`
+                    ? `product-attribute-capacity-${capacity}-selected`
+                    : `product-attribute-capacity-${capacity}`
                 }
                 className="cursor-pointer appearance-none h-[45px] w-[63px] border-2 border-[#1D1F22] rounded-sm checked:bg-[#1D1F22] focus:outline-none"
                 type="radio"

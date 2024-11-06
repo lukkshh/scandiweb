@@ -24,14 +24,14 @@ class SizeOptions extends React.Component {
     return (
       <>
         <p className="uppercase mt-4 text-lg font-bold">Size:</p>
-        <div className="flex space-x-2">
+        <div data-testid="product-attribute-size" className="flex space-x-2">
           {sizes.map((size) => (
             <div className="relative" key={size}>
               <input
                 data-testid={
                   this.props.selectedSize === size
-                    ? `cart-item-attribute-size-${size}-selected`
-                    : `cart-item-attribute-size-${size}`
+                    ? `product-attribute-size-${size}-selected`
+                    : `product-attribute-size-${size}`
                 }
                 className="cursor-pointer appearance-none h-[45px] w-[63px] border-2 border-[#1D1F22] rounded-sm checked:bg-[#1D1F22] focus:outline-none"
                 type="radio"
