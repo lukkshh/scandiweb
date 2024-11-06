@@ -102,8 +102,7 @@ class Cart extends React.Component {
             className="absolute right-[-40px] top-[49px] w-[325px] bg-white z-50"
           >
             <div className="m-4 ">
-              <span className="font-bold">MyBag</span>,{" "}
-              <span data-testid="cart-item-amount">{cartItemsCount}</span> items
+              <span className="font-bold">MyBag</span>, {cartItemsCount} items
             </div>
             {/* items to display */}
             <DisplayItems cartItems={cartItems}></DisplayItems>

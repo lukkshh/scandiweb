@@ -13,7 +13,7 @@ class QuantityController extends React.Component {
         >
           +
         </button>
-        {this.props.item.quantity}
+        <p data-testid="cart-item-amount">{this.props.item.quantity}</p>
         <button
           data-testid="cart-item-amount-decrease"
           className="border-2 flex justify-center items-center border-[#1D1F22] w-6 h-6 "
