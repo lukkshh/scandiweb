@@ -1,66 +1,117 @@
 <?php
 
+interface CategoryInterface {
+    public function getQuery(): string; // Define the query logic per category
+}
+
+class Product {
+    private string $id;
+    private string $name;
+    private bool $inStock;
+    private array $gallery;
+    private string $description;
+    private string $category;
+    private array $attributes;
+    private array $prices;
+    private string $brand;
+
+    public function __construct(array $data) {
+        $this->id = $data['id'];
+        $this->name = $data['name'];
+        $this->inStock = (bool) $data['inStock'];
+        $this->gallery = json_decode($data['gallery'], true);
+        $this->description = $data['description'];
+        $this->category = $data['category'];
+        $this->attributes = json_decode($data['attributes'], true);
+        $this->prices = json_decode($data['prices'], true);
+        $this->brand = $data['brand'];
+    }
+
+    // Getter methods...
+    public function getId(): string { return $this->id; }
+    public function getName(): string { return $this->name; }
+    public function isInStock(): bool { return $this->inStock; }
+    public function getGallery(): array { return $this->gallery; }
+    public function getDescription(): string { return $this->description; }
+    public function getCategory(): string { return $this->category; }
+    public function getAttributes(): array { return $this->attributes; }
+    public function getPrices(): array { return $this->prices; }
+    public function getBrand(): string { return $this->brand; }
+}
+
+class AllCategory implements CategoryInterface {
+    public function getQuery(): string {
+        return "SELECT * FROM products";
+    }
+}
+
+class ClothesCategory implements CategoryInterface {
+    public function getQuery(): string {
+        return "SELECT * FROM products WHERE category = 'Clothes'";
+    }
+}
+
+class TechCategory implements CategoryInterface {
+    public function getQuery(): string {
+        return "SELECT * FROM products WHERE category = 'Tech'";
+    }
+}
+
 class Products {
-    private $db;
+    private PDO $db;
 
     public function __construct(Database $db) {
         $this->db = $db->getConnection();
     }
 
-    public function getProducts() {
-        $statement = $this->db->prepare("SELECT * FROM products");
+    public function getProducts(CategoryInterface $category): array {
+        $query = $category->getQuery();
+        $statement = $this->db->prepare($query);
         $statement->execute();
-        $products = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        // Decode the gallery, attributes and prices field to make sure it's an array
-        foreach ($products as &$product) {
-            $product['gallery'] = json_decode($product['gallery'], true);
-            $product['attributes'] = json_decode($product['attributes'], true);
-            $product['prices'] = json_decode($product['prices'], true);
-        }
-
-        return $products;
-
-    }
-    
-    public function getProductsByCategory($category) {
-        $statement = $this->db->prepare("SELECT * FROM products WHERE category = :category");
-        $statement->bindParam(':category', $category, PDO::PARAM_STR);
-        $statement->execute();
-        $products = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        // Decode the gallery, attributes and prices field to make sure it's an array
-        foreach ($products as &$product) {
-            $product['gallery'] = json_decode($product['gallery'], true);
-            $product['attributes'] = json_decode($product['attributes'], true);
-            $product['prices'] = json_decode($product['prices'], true);
-        }   
-
-        return $products;
+        return $this->mapProducts($rows);
     }
 
-    public function getCategories() {
+    private function mapProducts(array $rows): array {
+        return array_map(fn($row) => new Product($row), $rows);
+    }
+
+    private function mapCategories(array $rows): array {
+        return array_map(fn($row) => new Category($row), $rows);
+    }
+
+    public function getCategories(): array {
         $statement = $this->db->prepare("SELECT * FROM categories");
         $statement->execute();
-        $categories = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return $categories;
+        return $this->mapCategories($rows); 
     }
 
-    public function getProductById($id) {
+    public function getProductById(string $id): ?Product {
         $statement = $this->db->prepare("SELECT * FROM products WHERE id = :id");
         $statement->bindParam(':id', $id, PDO::PARAM_STR);
         $statement->execute();
-        $products = $statement->fetch(PDO::FETCH_ASSOC);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-        // Decode the gallery, attributes and prices field to make sure it's an array
-        $products['gallery'] = json_decode($products['gallery'], true);
-        $products['attributes'] = json_decode($products['attributes'], true);
-        $products['prices'] = json_decode($products['prices'], true);
-    
+        if ($row) {
+            return new Product($row);
+        }
+        return null;    
+        }
+}
 
-        return $products;
+class Category {
+    private string $id;
+    private string $name;
 
+    public function __construct(array $data) {
+        $this->id = $data['id'];
+        $this->name = $data['name'];
     }
 
+    public function getId(): string { return $this->id; } 
+
+    public function getName(): string { return $this->name; }
 }
