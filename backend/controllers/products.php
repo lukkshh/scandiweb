@@ -1,18 +1,10 @@
 <?php
 
-interface ProductInterface {
-    public function getId(): string;
-    public function getName(): string;
-    public function isInStock(): bool;
-    public function getGallery(): array;
-    public function getDescription(): string;
-    public function getCategory(): string;
-    public function getAttributes(): array;
-    public function getPrices(): array;
-    public function getBrand(): string;
+interface CategoryInterface {
+    public function getQuery(): string; // Define the query logic per category
 }
 
-class Product implements ProductInterface {
+class Product {
     private string $id;
     private string $name;
     private bool $inStock;
@@ -35,43 +27,79 @@ class Product implements ProductInterface {
         $this->brand = $data['brand'];
     }
 
-    public function getId(): string {
-        return $this->id;
+    // Getter methods...
+    public function getId(): string { return $this->id; }
+    public function getName(): string { return $this->name; }
+    public function isInStock(): bool { return $this->inStock; }
+    public function getGallery(): array { return $this->gallery; }
+    public function getDescription(): string { return $this->description; }
+    public function getCategory(): string { return $this->category; }
+    public function getAttributes(): array { return $this->attributes; }
+    public function getPrices(): array { return $this->prices; }
+    public function getBrand(): string { return $this->brand; }
+}
+
+class AllCategory implements CategoryInterface {
+    public function getQuery(): string {
+        return "SELECT * FROM products";
+    }
+}
+
+class ClothesCategory implements CategoryInterface {
+    public function getQuery(): string {
+        return "SELECT * FROM products WHERE category = 'Clothes'";
+    }
+}
+
+class TechCategory implements CategoryInterface {
+    public function getQuery(): string {
+        return "SELECT * FROM products WHERE category = 'Tech'";
+    }
+}
+
+class Products {
+    private PDO $db;
+
+    public function __construct(Database $db) {
+        $this->db = $db->getConnection();
     }
 
-    public function getName(): string {
-        return $this->name;
+    public function getProducts(CategoryInterface $category): array {
+        $query = $category->getQuery();
+        $statement = $this->db->prepare($query);
+        $statement->execute();
+        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $this->mapProducts($rows);
     }
 
-    public function isInStock(): bool {
-        return $this->inStock;
+    private function mapProducts(array $rows): array {
+        return array_map(fn($row) => new Product($row), $rows);
     }
 
-    public function getGallery(): array {
-        return $this->gallery;
+    private function mapCategories(array $rows): array {
+        return array_map(fn($row) => new Category($row), $rows);
     }
 
-    public function getDescription(): string {
-        return $this->description;
+    public function getCategories(): array {
+        $statement = $this->db->prepare("SELECT * FROM categories");
+        $statement->execute();
+        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $this->mapCategories($rows); 
     }
 
-    public function getCategory(): string {
-        return $this->category;
-    }
+    public function getProductById(string $id): ?Product {
+        $statement = $this->db->prepare("SELECT * FROM products WHERE id = :id");
+        $statement->bindParam(':id', $id, PDO::PARAM_STR);
+        $statement->execute();
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-    public function getAttributes(): array {
-        return $this->attributes;
-    }
-
-    public function getPrices(): array {
-        return $this->prices;
-    }
-
-    public function getBrand(): string {
-        return $this->brand;
-    }
-
-
+        if ($row) {
+            return new Product($row);
+        }
+        return null;    
+        }
 }
 
 class Category {
@@ -83,78 +111,7 @@ class Category {
         $this->name = $data['name'];
     }
 
-    public function getId(): string {
-        return $this->id;
-    } 
+    public function getId(): string { return $this->id; } 
 
-    public function getName(): string {
-        return $this->name;
-    }
-
-
-}
-
-
-
-class Products {
-    private PDO $db;
-    private array $products;
-
-    public function __construct(Database $db) {
-        $this->db = $db->getConnection();
-    }
-
-    public function getProducts(): array {
-        $statement = $this->db->prepare("SELECT * FROM products");
-        $statement->execute();
-        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        $products = [];
-        foreach ($rows as $row) {
-            $products[] = new Product($row); // Create Product entity
-        }
-        return $products;
-    }
-
-    public function getProductsByCategory(string $category): array {
-        $statement = $this->db->prepare("SELECT * FROM products WHERE category = :category");
-        $statement->bindParam(':category', $category, PDO::PARAM_STR);
-        $statement->execute();
-        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        $products = [];
-        foreach ($rows as $row) {
-            $products[] = new Product($row); // Create Product entity
-        }
-        return $products;
-    }
-
-    public function getProductById(string $id): ?Product {
-        $statement = $this->db->prepare("SELECT * FROM products WHERE id = :id");
-        $statement->bindParam(':id', $id, PDO::PARAM_STR);
-        $statement->execute();
-        $row = $statement->fetch(PDO::FETCH_ASSOC);
-
-        if ($row) {
-            return new Product($row); // Create Product entity
-        }
-        return null;    
-
-        
-    }
-
-
-    public function getCategories(): array {
-        $statement = $this->db->prepare("SELECT * FROM categories");
-        $statement->execute();
-        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        $categories = [];        
-        foreach ($rows as $row) {
-            $categories[] = new Category($row);
-        }
-
-        return $categories;
-    }
-
+    public function getName(): string { return $this->name; }
 }

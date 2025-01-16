@@ -74,7 +74,9 @@ class GraphQLSchema {
                 'products' => [
                     'type' => Type::listOf($productType),
                     'resolve' => function () {
-                        $products = $this->product->getProducts(); 
+
+                        $products = $this->product->getProducts(new AllCategory());
+                
                         return array_map(function ($product) {
                             return [
                                 'id' => $product->getId(),
@@ -96,7 +98,16 @@ class GraphQLSchema {
                         'category' => Type::string(),
                     ],
                     'resolve' => function ($root, $args) {
-                        $products = $this->product->getProductsByCategory($args['category']); 
+                        $category = $args['category']; 
+
+                        $categoryClass = match (strtolower($category)) {
+                            "tech" => new TechCategory(),
+                            "clothes" => new ClothesCategory(),
+                            default => new AllCategory(),
+                        };
+
+                        $products = $this->product->getProducts($categoryClass);
+            
                         return array_map(function ($product) {
                             return [
                                 'id' => $product->getId(),
@@ -110,12 +121,14 @@ class GraphQLSchema {
                                 'brand' => $product->getBrand(),
                             ];
                         }, $products);
+                        
+    
                     }
                 ],
                 'categories' => [
                     'type' => Type::listOf($categoryType),
                     'resolve' => function () {
-                        $categories = $this->product->getCategories(); 
+                        $categories = $this->product->getCategories();
                         return array_map(function ($category) {
                             return [
                                 'id' => $category->getId(),
