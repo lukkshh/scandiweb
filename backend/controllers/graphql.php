@@ -9,8 +9,8 @@ class GraphQLSchema {
     private $product;
     private $orders;
 
-    public function __construct(Products $product , Orders $orders) {
-        $this->product = $product;
+    public function __construct(Products $products , Orders $orders) {
+        $this->product = $products;
         $this->orders = $orders;
     }
 
@@ -74,7 +74,20 @@ class GraphQLSchema {
                 'products' => [
                     'type' => Type::listOf($productType),
                     'resolve' => function () {
-                        return $this->product->getProducts();
+                        $products = $this->product->getProducts(); 
+                        return array_map(function ($product) {
+                            return [
+                                'id' => $product->getId(),
+                                'name' => $product->getName(),
+                                'inStock' => $product->isInStock(),
+                                'gallery' => $product->getGallery(),
+                                'description' => $product->getDescription(),
+                                'category' => $product->getCategory(),
+                                'attributes' => $product->getAttributes(),
+                                'prices' => $product->getPrices(),
+                                'brand' => $product->getBrand(),
+                            ];
+                        }, $products);
                     }
                 ],
                 'productsByCategory' => [
@@ -83,13 +96,32 @@ class GraphQLSchema {
                         'category' => Type::string(),
                     ],
                     'resolve' => function ($root, $args) {
-                        return $this->product->getProductsByCategory($args['category']);
+                        $products = $this->product->getProductsByCategory($args['category']); 
+                        return array_map(function ($product) {
+                            return [
+                                'id' => $product->getId(),
+                                'name' => $product->getName(),
+                                'inStock' => $product->isInStock(),
+                                'gallery' => $product->getGallery(),
+                                'description' => $product->getDescription(),
+                                'category' => $product->getCategory(),
+                                'attributes' => $product->getAttributes(),
+                                'prices' => $product->getPrices(),
+                                'brand' => $product->getBrand(),
+                            ];
+                        }, $products);
                     }
                 ],
                 'categories' => [
                     'type' => Type::listOf($categoryType),
                     'resolve' => function () {
-                        return $this->product->getCategories();
+                        $categories = $this->product->getCategories(); 
+                        return array_map(function ($category) {
+                            return [
+                                'id' => $category->getId(),
+                                'name' => $category->getName(),
+                            ];
+                        }, $categories);
                     }
                 ],
                 'product' => [
@@ -98,7 +130,18 @@ class GraphQLSchema {
                         'id' => Type::nonNull(Type::string())
                     ],
                     'resolve' => function ($root, $args) {
-                        return $this->product->getProductById($args['id']);
+                        $product = $this->product->getProductById($args['id']); 
+                        return [
+                            'id' => $product->getId(),
+                            'name' => $product->getName(),
+                            'inStock' => $product->isInStock(),
+                            'gallery' => $product->getGallery(),
+                            'description' => $product->getDescription(),
+                            'category' => $product->getCategory(),
+                            'attributes' => $product->getAttributes(),
+                            'prices' => $product->getPrices(),
+                            'brand' => $product->getBrand(),
+                        ];
                     }
                 ],
             ]
