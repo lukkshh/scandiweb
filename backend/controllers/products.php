@@ -57,6 +57,16 @@ class TechCategory implements CategoryInterface {
     }
 }
 
+class CategoryFactory {
+    public static function create(string $category): CategoryInterface {
+        return match (strtolower($category)) {
+            "tech" => new TechCategory(),
+            "clothes" => new ClothesCategory(),
+            default => new AllCategory(),
+        };
+    }
+}
+
 class Products {
     private PDO $db;
 

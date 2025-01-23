@@ -100,14 +100,9 @@ class GraphQLSchema {
                     'resolve' => function ($root, $args) {
                         $category = $args['category']; 
 
-                        $categoryClass = match (strtolower($category)) {
-                            "tech" => new TechCategory(),
-                            "clothes" => new ClothesCategory(),
-                            default => new AllCategory(),
-                        };
-
+                        $categoryClass = CategoryFactory::create($category);
                         $products = $this->product->getProducts($categoryClass);
-            
+
                         return array_map(function ($product) {
                             return [
                                 'id' => $product->getId(),
