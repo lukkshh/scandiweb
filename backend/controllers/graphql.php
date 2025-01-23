@@ -75,7 +75,7 @@ class GraphQLSchema {
                     'type' => Type::listOf($productType),
                     'resolve' => function () {
 
-                        $products = $this->product->getProducts(new AllCategory());
+                        $products = $this->product->getProducts("All");
                 
                         return array_map(function ($product) {
                             return [
@@ -100,13 +100,7 @@ class GraphQLSchema {
                     'resolve' => function ($root, $args) {
                         $category = $args['category']; 
 
-                        $categoryClass = match (strtolower($category)) {
-                            "tech" => new TechCategory(),
-                            "clothes" => new ClothesCategory(),
-                            default => new AllCategory(),
-                        };
-
-                        $products = $this->product->getProducts($categoryClass);
+                        $products = $this->product->getProducts($category);
             
                         return array_map(function ($product) {
                             return [

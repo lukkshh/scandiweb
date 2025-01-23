@@ -1,7 +1,8 @@
 <?php
 
 interface CategoryInterface {
-    public function getQuery(): string; // Define the query logic per category
+    public function getQuery(): string;
+    public function getName(): string;
 }
 
 class Product {
@@ -43,11 +44,20 @@ class AllCategory implements CategoryInterface {
     public function getQuery(): string {
         return "SELECT * FROM products";
     }
+
+    public function getName(): string {
+        return "All";
+    }
+
 }
 
 class ClothesCategory implements CategoryInterface {
     public function getQuery(): string {
         return "SELECT * FROM products WHERE category = 'Clothes'";
+    }
+
+    public function getName(): string {
+        return "Clothes";
     }
 }
 
@@ -55,18 +65,46 @@ class TechCategory implements CategoryInterface {
     public function getQuery(): string {
         return "SELECT * FROM products WHERE category = 'Tech'";
     }
+
+
+    public function getName(): string {
+        return "Tech";
+    }
 }
 
 class Products {
     private PDO $db;
 
+    private static $categories = [
+        'all' => AllCategory::class,
+        'clothes' => ClothesCategory::class,
+        'tech' => TechCategory::class
+    ];
+
     public function __construct(Database $db) {
         $this->db = $db->getConnection();
     }
 
-    public function getProducts(CategoryInterface $category): array {
-        $query = $category->getQuery();
-        $statement = $this->db->prepare($query);
+    public function getProducts(string $category): array {
+
+        $category = strtolower($category);
+
+        
+        if (isset(self::$categories[$category])) {
+            $className = self::$categories[$category];
+            $category = new $className();
+        } 
+        else {
+            echo json_encode([
+                'errors' => [
+                    ['message' => "Invalid category: " . $category]
+                ]
+                ]);
+            http_response_code(400);
+            die;
+        }
+
+        $statement = $this->db->prepare($category->getQuery());
         $statement->execute();
         $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
