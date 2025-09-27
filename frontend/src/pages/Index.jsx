@@ -48,7 +48,7 @@ class Home extends React.Component {
           </div>
 
           <div className="w-full flex justify-center items-center">
-            <div className="grid grid-cols-3 gap-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-16">
               {data.products.map((product, index) => (
                 <Card key={index} data={product} />
               ))}

@@ -146,7 +146,7 @@ class PDP extends React.Component {
     return (
       <>
         <Header activeCategory={data.product.category} />
-        <section className="flex m-[140px]">
+        <section className="flex flex-col gap-12 m-[50px] lg:flex-row md:m-[140px] lg:gap-0">
           <Gallery
             data={data.product}
             currentImg={currentImg}
@@ -155,7 +155,7 @@ class PDP extends React.Component {
             handleNextImage={this.handleNextImage}
           ></Gallery>
 
-          <div className="ml-[200px]">
+          <div className="lg:ml-[200px]">
             <p className="font-semibold text-3xl">{data.product.name}</p>
 
             <SizeOptions
@@ -195,9 +195,8 @@ class PDP extends React.Component {
             >
               Add To Cart
             </button>
-
             <div
-              className="pr-[150px] mt-6 max-w-[900px]"
+              className="lg:pr-[150px] mt-6 max-w-[900px]"
               data-testid="product-description"
             >
               {parse(data.product.description || "")}
