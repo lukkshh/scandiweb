@@ -49,7 +49,7 @@ class Header extends React.Component {
         {this.state.isCartOpen && (
           <div className="fixed top-20 inset-0 bg-[#39374838] z-40" />
         )}
-        <ul className="flex list-none gap-5">
+        <ul className="hidden md:flex list-none gap-5">
           {links.map((link) => (
             <li
               key={link.path}
@@ -71,7 +71,9 @@ class Header extends React.Component {
             </li>
           ))}
         </ul>
-        <img className="mr-40" src="/a-logo.svg" alt="logo" />
+        <a href="/">
+          <img className="mr-40" src="/a-logo.svg" alt="logo" />
+        </a>
         <Cart isCartOpen={this.state.isCartOpen} toggleCart={this.toggleCart} />
       </header>
     );
