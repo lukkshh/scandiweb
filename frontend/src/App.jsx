@@ -2,9 +2,9 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-import Category from "./pages/Category";
-import Home from "./pages/Index";
-import PDP from "./pages/PDP";
+const Category = React.lazy(() => import("./pages/Category"));
+const Home = React.lazy(() => import("./pages/Index"));
+const PDP = React.lazy(() => import("./pages/PDP"));
 
 import "./App.css";
 
